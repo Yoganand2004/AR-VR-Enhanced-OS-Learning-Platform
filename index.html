@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Learning Platform - AR/VR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 15px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 10px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .section {
+            padding: 50px;
+            background: white;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background: #007bff;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        #os-content {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .quiz-container {
+            margin-top: 20px;
+        }
+        #question {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        #next-btn {
+            background: #ff6600;
+            padding: 10px 15px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #next-btn:hover {
+            background: #cc5500;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background: #222;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>AR/VR OS Learning Platform</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#learn">Learn OS</a></li>
+                <li><a href="#quiz">Quiz</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="section">
+        <h2>Welcome to the OS Learning Platform</h2>
+        <p>Explore OS concepts like process management & memory allocation in an interactive way.</p>
+        <a href="#learn" class="btn">Start Learning</a>
+    </section>
+
+    <!-- OS Learning Section with API Integration -->
+    <section id="learn" class="section">
+        <h2>Learn Operating Systems</h2>
+        <p>Get real-time information about OS concepts.</p>
+        <div id="os-content">Loading OS content...</div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz" class="section">
+        <h2>OS Quiz</h2>
+        <div class="quiz-container">
+            <div id="question"></div>
+            <button id="next-btn">Next</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 OS Learning Platform</p>
+    </footer>
+
+    <script>
+        // Fetch OS-related content using Wikipedia API
+        document.addEventListener("DOMContentLoaded", function() {
+            const contentDiv = document.getElementById("os-content");
+
+            fetch("https://en.wikipedia.org/api/rest_v1/page/summary/Operating_system")
+                .then(response => response.json())
+                .then(data => {
+                    contentDiv.innerHTML = `
+                        <h3>${data.title}</h3>
+                        <p>${data.extract}</p>
+                        <a href="${data.content_urls.desktop.page}" target="_blank">Read more</a>
+                    `;
+                })
+                .catch(error => {
+                    contentDiv.innerHTML = "<p>Error loading content.</p>";
+                    console.error("API Error:", error);
+                });
+        });
+
+        // Simple Quiz Logic
+        const questions = [
+            { question: "What is a process in OS?", answer: "A program in execution." },
+            { question: "What is the role of a scheduler?", answer: "To manage process execution order." },
+            { question: "Which algorithm is used for process scheduling?", answer: "Round Robin, FCFS, SJF, etc." }
+        ];
+
+        let currentQuestion = 0;
+        const questionDiv = document.getElementById("question");
+        const nextBtn = document.getElementById("next-btn");
+
+        function showQuestion() {
+            questionDiv.textContent = questions[currentQuestion].question;
+        }
+
+        nextBtn.addEventListener("click", () => {
+            currentQuestion = (currentQuestion + 1) % questions.length;
+            showQuestion();
+        });
+
+        showQuestion();
+    </script>
+
+</body>
+</html>
