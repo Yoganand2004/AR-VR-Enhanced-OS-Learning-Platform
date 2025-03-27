@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Process Visualization</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+<script>
+    // Create Scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Create CPU Block (3D Box)
+    const cpuGeometry = new THREE.BoxGeometry();
+    const cpuMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
+    scene.add(cpu);
+
+    // Create Process (Sphere)
+    const processGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const processMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const process = new THREE.Mesh(processGeometry, processMaterial);
+    process.position.set(-2, 0, 0);
+    scene.add(process);
+
+    // Move process towards CPU
+    function animate() {
+        requestAnimationFrame(animate);
+        process.position.x += 0.01;
+        renderer.render(scene, camera);
+    }
+
+    camera.position.z = 5;
+    animate();
+</script>
+
+</body>
+</html>
